@@ -8,19 +8,13 @@ import (
 	"github.com/dqt12hcmus/go-rbmq/shared"
 )
 
-func handleError(err error, msg string) {
-	if (err != nil) {
-		log.Fatalf("%s : %s", msg, err)
-	}
-}
-
 func main() {
 	conn, err := amqp.Dial(shared.Config.AMQPConnectionURL)
-	handleError(err, "Cannot connect to AMQP")
+	shared.HandleError(err, "Cannot connect to AMQP")
 	defer conn.Close()
 
 	amqpChannel, err := conn.Channel()
-	handleError(err, "Cannot create a amqpChannel")
+	shared.HandleError(err, "Cannot create a amqpChannel")
 	defer amqpChannel.Close()
 
 	queue, err := amqpChannel.QueueDeclare(
@@ -31,7 +25,7 @@ func main() {
 		false,
 		nil,
 	)
-	handleError(err, "Cannot declare 'add' queue")
+	shared.HandleError(err, "Cannot declare 'add' queue")
 
 	err = amqpChannel.Qos(
 		1,
@@ -48,7 +42,7 @@ func main() {
 		false,
 		nil,
 	)
-	handleError(err, "Cannot register consumer")
+	shared.HandleError(err, "Cannot register consumer")
 
 	stopChan := make(chan bool)
 

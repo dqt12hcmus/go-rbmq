@@ -1,5 +1,9 @@
 package shared
 
+import (
+	"log"
+)
+
 type Configuration struct {
 	AMQPConnectionURL string
 }
@@ -11,4 +15,10 @@ type AddTask struct {
 
 var Config = Configuration{
 	AMQPConnectionURL: "amqp://guest:guest@localhost:5672/",
+}
+
+func HandleError(err error, msg string) {
+	if (err != nil) {
+		log.Fatalf("%s : %s", msg, err)
+	}
 }
