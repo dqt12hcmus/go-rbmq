@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: go-consume
+spec:
+  containers:
+  - name: go-consume
+    image: go-consumer:latest
+    imagePullPolicy: Never

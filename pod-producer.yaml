@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: go-produce
+spec:
+  containers:
+  - name: go-produce
+    image: go-producer:latest
+    imagePullPolicy: Never
