@@ -14,7 +14,7 @@ type AddTask struct {
 }
 
 var Config = Configuration{
-	AMQPConnectionURL: "amqp://guest:guest@localhost:5672/",
+	AMQPConnectionURL: "amqp://guest:guest@rabbitmq:5672/",
 }
 
 func HandleError(err error, msg string) {
