@@ -8,7 +8,7 @@ import (
 	"github.com/dqt12hcmus/go-rbmq/shared"
 )
 
-func main() {
+func getMessageChannel() (<-chan amqp.Delivery, error) {
 	conn, err := amqp.Dial(shared.Config.AMQPConnectionURL)
 	shared.HandleError(err, "Cannot connect to AMQP")
 	defer conn.Close()
@@ -44,6 +44,10 @@ func main() {
 	)
 	shared.HandleError(err, "Cannot register consumer")
 
+	return messageChannel, err
+}
+
+func pushToWorkerPool(messageChannel <-chan amqp.Delivery) {
 	stopChan := make(chan bool)
 
 	go func() {
@@ -74,4 +78,9 @@ func main() {
 	}()
 
 	<-stopChan
+}
+
+func main() {
+	messageChannel, _ := getMessageChannel()
+	pushToWorkerPool(messageChannel)
 }
